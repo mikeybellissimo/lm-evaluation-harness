@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/EleutherAI/lm-evaluation-harness",
-    packages=setuptools.find_packages(include="datasets/bigbench_resources"),
+    packages=setuptools.find_packages(where="lm_eval", include=["datasets/bigbench_resources"]),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3",
