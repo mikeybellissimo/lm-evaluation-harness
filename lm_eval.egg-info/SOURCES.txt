@@ -47,6 +47,7 @@ lm_eval/models/dummy.py
 lm_eval/models/gpt2.py
 lm_eval/models/gpt3.py
 lm_eval/models/huggingface.py
+lm_eval/models/mpt.py
 lm_eval/models/textsynth.py
 lm_eval/tasks/__init__.py
 lm_eval/tasks/anli.py
