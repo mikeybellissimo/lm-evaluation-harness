@@ -61,7 +61,8 @@ class HFLM(BaseLM):
             revision=revision,
             torch_dtype=_get_dtype(dtype),
             trust_remote_code=trust_remote_code,
-        ).to(self.device)
+            device_map={'':0}
+        )
         self.gpt2.eval()
 
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(
@@ -99,8 +100,10 @@ class HFLM(BaseLM):
             return self.gpt2.config.n_ctx
         except AttributeError:
             # gptneoconfig doesn't have n_ctx apparently
-            return self.gpt2.config.max_position_embeddings
-
+            try:
+                return self.gpt2.config.max_position_embeddings
+            except AttributeError:
+                return self.gpt2.config.max_seq_len
     @property
     def max_gen_toks(self):
         return 256
