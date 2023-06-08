@@ -110,11 +110,11 @@ class HuggingFaceAutoLM(BaseLM):
             use_accelerate (bool, optional, defaults to False):
                 If True, uses the `accelerate` library to load a large model across
                 multiple devices.
-            device_map_option (str, optional, defaults to "auto"):
+            device_map_option (str, optional, defaults to {'':0}):
                 The device map option to use when loading the model with
                 `accelerate`.
                 Options:
-                    "auto", "balanced", "balanced_low_0", "sequential"
+                    "auto", "balanced", "balanced_low_0", "sequential", or a specified device map dict with the layer_names mapped to the device ({'':0} to map all to the 0th device)
                 See the `accelerate` docs for more details on these options:
                 https://huggingface.co/docs/transformers/main/en/main_classes/model#transformers.PreTrainedModel.from_pretrained.device_map
             max_memory_per_gpu (Union[int, str], optional, defaults to None):
@@ -230,7 +230,7 @@ class HuggingFaceAutoLM(BaseLM):
             self._device = self.model.hf_device_map["lm_head"]
         if not use_accelerate:
             self.model.to(self._device)
-        print(self._device)
+        
     def _create_auto_model(
         self,
         *,

@@ -17,6 +17,7 @@ def simple_evaluate(
     num_fewshot=0,
     batch_size=None,
     device=None,
+    device_map_option={'':0},
     no_cache=False,
     limit=None,
     bootstrap_iters=100000,
@@ -41,6 +42,13 @@ def simple_evaluate(
         Batch size for model
     :param device: str, optional
         PyTorch device (e.g. "cpu" or "cuda:0") for running models
+    :param device_map_option (str, optional, defaults to "auto"):
+        The device map option to use when loading the model with
+        `accelerate`.
+        Options:
+            "auto", "balanced", "balanced_low_0", "sequential", or a specified device map dict with the layer_names mapped to the device ({'':0} to map all to the 0th device)
+        See the `accelerate` docs for more details on these options:
+        https://huggingface.co/docs/transformers/main/en/main_classes/model#transformers.PreTrainedModel.from_pretrained.device_map
     :param no_cache: bool
         Whether or not to cache
     :param limit: int or float, optional
@@ -67,7 +75,7 @@ def simple_evaluate(
         if model_args is None:
             model_args = ""
         lm = lm_eval.models.get_model(model).create_from_arg_string(
-            model_args, {"batch_size": batch_size, "device": device}
+            model_args, {"batch_size": batch_size, "device": device, "device_map_option" : device_map_option}
         )
     else:
         assert isinstance(model, lm_eval.base.LM)
